@@ -11,56 +11,57 @@
   <h2>Desenvolvido por Fernando Feitosa fefeitosa@leroymerlin.com.br</h2>
   <div class="rotulo">
     <div>LM</div>
-    <div>Descrição</div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div>Medidas</div>
+    <div></div>
+    <div></div>
+    <div></div>
     <div>Preço</div>
     <div></div>
     <div>nº de Etiquetas</div>
     <div></div>
-    <div></div>
   </div>
 
   <form id="form-etiqueta">
+
+    <select id="lm" required>
+      <option value="" disabled selected>Selecione o Código LM</option>
+    </select>
   
-  <select id="lm" required>
-    <option value="" disabled selected>Selecione o Código LM</option>
-    <option value="91855652">91855652 MDF CRU 3MM</option>
-    <option value="91855666">91855666 MDF CRU 6MM</option>
-    <option value="91855701">91855701 MDF CRU 9MM</option>
-    <option value="91855470">91855470 MDF CRU 15MM</option>
-    <option value="91855673">91855673 MDF BRA 3MM</option>
-    <option value="91855680">91855680 MDF BRA 6MM</option>
-    <option value="91855694">91855694 MDF BRA 9MM</option>
-    <option value="91855463">91855463 MDF BRA 15MM</option>
-    <option value="91855610">91855610 MDF NOC 15MM</option>
-    <option value="91855631">91855463 MDF LDR 15MM</option>
-
-    
-    <!-- Adicione mais opções aqui conforme necessário -->
-  </select>
-
-    <input type="text" id="descricao" placeholder="Descrição" required />
+    <input type="number" id="comprimento" placeholder="Comprimento (cm)" required />
+    <input type="number" id="largura" placeholder="Largura (cm)" required />
+    <input type="text" id="unidade" placeholder="Área (m²)" readonly />
+  
     <input type="text" id="preco" placeholder="Preço" required />
-    <input type="text" id="unidade" placeholder="Unidade (ex: 0,27 m²)" />
     <input type="number" id="quantidade" placeholder="Qtd" min="1" max="32" value="1" />
-
+  
     <label style="font-size: 13px;">
-     <!--📎 Código de Barras--> 
       <input type="text" id="codigoBarras" readonly placeholder="Caminho do Código de Barras" style="font-size: 12px;" />
     </label>
-
+  
     <label style="font-size: 13px;">
-      <!--📎 QR Code-->
       <input type="text" id="qrCode" readonly placeholder="Caminho do QR Code" style="font-size: 12px;" />
     </label>
-
-    <button type="submit">Adicionar Etiqueta</button>
+  
+    <button type="submit" style=" margin: 16px;">Adicionar Etiqueta</button>
+    <button id="botao-imprimir" style="display: none; margin: 16px;" onclick="window.print()">Imprimir</button>
+    <button id="botao-recarregar" style="display: none; margin: 16px;" onclick="location.reload()">Recomeçar</button>
+  
   </form>
+  
 
   <hr/>
 
-  <div class="etiquetas-container" id="etiquetas-container"></div>
+  <div class="etiquetas-container" id="etiquetas-container"> </div>
+  <button id="botao-imprimir" style="display: none; margin: 16px;" onclick="window.print()">Imprimir</button>
+
 
   <script src="etiquetas.js"></script>
+  
+  <script src="dados.js"></script>
+  
 </body>
 <footer>
   Desenvolvido por Fernando Feitosa  09/05/2025  fefeitosa@leroymerlin.com.br  19 9 9368 3390

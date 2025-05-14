@@ -1,3 +1,5 @@
+// script.js atualizado
+
 const form = document.getElementById('form-etiqueta');
 const container = document.getElementById('etiquetas-container');
 const TOTAL_ETIQUETAS = 32;
@@ -37,26 +39,22 @@ function atualizarVisual() {
 }
 
 // Preenchimento automático com base no código LM
-document.getElementById('lm').addEventListener('input', function () {
+const lmSelect = document.getElementById('lm');
+lmSelect.addEventListener('change', function () {
   const lmCode = this.value.trim();
+  const lmOption = this.selectedOptions[0];
+  const detalhe = lmOption ? lmOption.textContent.split(' ').slice(1).join(' ') : '';
 
-  // Referência aos campos de entrada
-  const codigoBarrasInput = document.getElementById("codigoBarras");
-  const qrCodeInput = document.getElementById("qrCode");
+  // Define o caminho das imagens baseado no código LM
+  const imagePath_qr = `imagens/${lmCode}_qr.png`;
+  const imagePath_cb = `imagens/${lmCode}_cb.png`;
 
-  // Limpa os campos de entrada anteriores
-  codigoBarrasInput.value = "";
-  qrCodeInput.value = "";
+  // Preenche os campos com o caminho gerado
+  document.getElementById("codigoBarras").value = imagePath_cb;
+  document.getElementById("qrCode").value = imagePath_qr;
 
-  if (lmCode) {
-    // Define o caminho das imagens baseado no código LM
-    const imagePath_qr = `imagens/${lmCode}_qr.png`;
-    const imagePath_cb = `imagens/${lmCode}_cb.png`;
-
-    // Preenche os campos com o caminho gerado
-    codigoBarrasInput.value = imagePath_cb;
-    qrCodeInput.value = imagePath_qr;
-  }
+  // Armazena o detalhe temporariamente para uso posterior
+  this.dataset.detalhe = detalhe;
 });
 
 form.addEventListener('submit', function (event) {
@@ -66,14 +64,18 @@ form.addEventListener('submit', function (event) {
     alert("Você atingiu o limite de 32 etiquetas por página.");
     return;
   }
+  
+  const comprimento = document.getElementById('comprimento').value.trim();
+const largura = document.getElementById('largura').value.trim();
+const medida = `${comprimento}x${largura}`;
 
-  const lm = document.getElementById('lm').value.trim();
-  const descricao = document.getElementById('descricao').value.trim();
+  const lm = lmSelect.value.trim();
+  const detalhe = lmSelect.dataset.detalhe || '';
+  //const medida = document.getElementById('medida').value.trim();
+  const descricao = `${detalhe} ${medida}`;
   const preco = document.getElementById('preco').value.trim();
   const unidade = document.getElementById('unidade').value.trim();
   const quantidade = parseInt(document.getElementById('quantidade').value.trim(), 10) || 1;
-
-  // Obtém os caminhos das imagens
   const codigoBarrasPath = document.getElementById('codigoBarras').value;
   const qrCodePath = document.getElementById('qrCode').value;
 
@@ -100,6 +102,25 @@ form.addEventListener('submit', function (event) {
   }
   atualizarVisual();
   form.reset();
+  document.getElementById('botao-imprimir').style.display = 'inline-block';
+  document.getElementById('botao-recarregar').style.display = 'inline-block';
 });
+
+function calcularAreaAuto() {
+  const comp = parseFloat(document.getElementById('comprimento').value.replace(',', '.'));
+  const larg = parseFloat(document.getElementById('largura').value.replace(',', '.'));
+
+  if (!isNaN(comp) && !isNaN(larg)) {
+    const area = (comp * larg) / 10000;
+    const areaFormatada = area.toFixed(2).replace('.', ',') + ' m²';
+    document.getElementById('unidade').value = areaFormatada;
+  }
+}
+
+// Detectar saída dos campos
+document.getElementById('comprimento').addEventListener('blur', calcularAreaAuto);
+document.getElementById('largura').addEventListener('blur', calcularAreaAuto);
+
+
 
 document.addEventListener('DOMContentLoaded', criarGradeInicial);
